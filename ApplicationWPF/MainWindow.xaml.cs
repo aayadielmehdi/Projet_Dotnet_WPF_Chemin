@@ -85,12 +85,14 @@ namespace ApplicationWPF
 
         static int ascii = 65; // valeur pour creer le nom des villes
         private ObservableCollection<Ville_obsolete> villes_choisie = new ObservableCollection<Ville_obsolete>();
+        
         public event PropertyChangedEventHandler PropertyChanged;
         public void NotifyPropertyChanged(string propName)
         {
             if (this.PropertyChanged != null)
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
         }
+        
         public ObservableCollection<Ville_obsolete> Liste_Ville
         {
             get

@@ -45,7 +45,7 @@ namespace Partie_Console
 
         public override String ToString(){
             StringBuilder sb = new StringBuilder();
-            sb.Append(NomVille+"-"+XVille+"-"+YVille);
+            sb.Append(NomVille+"("+XVille+";"+YVille+")");
             return sb.ToString();
         }
 

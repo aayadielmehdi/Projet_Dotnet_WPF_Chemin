@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Partie_Console
 {
@@ -24,63 +25,14 @@ namespace Partie_Console
             mesVilles.Add(v6);
             mesVilles.Add(v7);
 
-            //Chemin chemin1 = new Chemin(mesVilles);
+            Parametrage param = new Parametrage(30, 10, 30, 30, 2);
+            Generation g = new Generation(10, mesVilles);
+            Population p = new Population();
 
-            Population p = new Population(10, mesVilles);
-            Generation g = new Generation();
-            g.Play(30,10,mesVilles,30,30);
-            //p.AlgoRun(30,30);
-            //p.GetFirstGen();
-            //p.XOver(30);
-            //p.Mutation(30);
-            //p.Elite();
-
-            /*
-            Population p2 = p.AlgoRun(5, 5);
-            Population p3 = p2.AlgoRun(5, 5);
-            Population p4 = p3.AlgoRun(5, 5);
-            */
-            Console.WriteLine(g.getGenerations.Count);
-            int i = 1;
-            foreach(Population po in g.getGenerations){
-                Console.WriteLine("--------Generation "+i+"------");
-                foreach(Chemin c in po.getGeneration){
-                    Console.WriteLine("--------Chemin------");
-                    Console.WriteLine(c);
-                }
-                i++;
-            }
-            Console.WriteLine(p.getGeneration.Count);
-            //Console.WriteLine(p.getElites.Count);
-
-
-            /*
-            Console.WriteLine("--- P1----");
-            foreach (Chemin c in p.getPopulation)
-            {
-                Console.WriteLine(c.ToString());
-                //Console.WriteLine(c.Score);
-            }
-            
-            Console.WriteLine("--- P2----");
-            foreach (Chemin c in p2.getGeneration)
-            {
-                Console.WriteLine(c);
-            }
-
-            Console.WriteLine("--- P3----");
-            foreach (Chemin c in p3.getGeneration)
-            {
-                Console.WriteLine(c);
-            }
-
-            Console.WriteLine("--- P4----");
-            foreach (Chemin c in p4.getGeneration)
-            {
-                Console.WriteLine(c);
-            }
-            */
-
+            // executer la fonction principale en thread
+            Thread thread = new Thread(new ThreadStart( () => p.Play(param.Taille_population,param.NbrCheminInGeneration, mesVilles, param.Crossover, param.Mutation, param.Elite)));
+            thread.Start();
+                      
             Console.ReadKey();
         }
     }

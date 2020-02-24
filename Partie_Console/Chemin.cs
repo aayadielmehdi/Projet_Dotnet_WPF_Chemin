@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Partie_Console
 {
@@ -21,6 +22,7 @@ namespace Partie_Console
                 lesVilles = value;
             }
         }
+        
         public double Score
         {
             get
@@ -44,6 +46,21 @@ namespace Partie_Console
 
         }
 
+        /// utiliser linq pour : 
+        /// toute les villes qui commencent par a ou A
+        /// recuperer les 10 meilleir chemin d'une liste de chemin
+        public IEnumerable<Ville> VilleCommencePar(char c)
+        {
+            IEnumerable<Ville> listeVilleLINQ = from v in this.lesVilles
+                                                         where v.NomVille.ToLower()[0] == c.ToString().ToLower()[0]
+                                                         select v;
+            foreach (Ville v in listeVilleLINQ)
+            {
+                Console.WriteLine(v.NomVille);
+            }
+            return listeVilleLINQ;
+        }
+
         public override String ToString()
         {
             StringBuilder sb = new StringBuilder();
@@ -51,8 +68,9 @@ namespace Partie_Console
                 sb.Append(v.NomVille);
                 sb.Append("-");
             }
+            sb = sb.Remove(sb.Length-1,1);  // enlever dernier caractere '-' de la chaine
             return sb.ToString();
         }
-
+      
     }
 }

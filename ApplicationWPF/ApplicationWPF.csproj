@@ -91,7 +91,6 @@
     <Compile Include="Input_NomVille.xaml.cs">
       <DependentUpon>Input_NomVille.xaml</DependentUpon>
     </Compile>
-    <Compile Include="InterAction_DB.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

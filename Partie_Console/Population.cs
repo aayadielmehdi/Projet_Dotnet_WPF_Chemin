@@ -1,272 +1,96 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 namespace Partie_Console
 {
     class Population
     {
-        private List<Ville> mesVilles;
-        private int FirstGeneration;
+        private List<Generation> mesGenerations;
 
-        //private List<Chemin> mesElites;
-        private List<Chemin> maGeneration;
-        private List<Chemin> maPopulation;
-
-        public Population(int firstGeneration, List<Chemin> mesChemins)
+        public Population()
         {
-            this.FirstGeneration = firstGeneration;
-            this.maGeneration = new List<Chemin>(mesChemins);
-            //this.mesElites = new List<Chemin>();
-            this.maPopulation = new List<Chemin>();
-            //GetFirstGen();
-        }
-        public Population(int firstGeneration, List<Ville> mesVilles)
-        {
-            this.mesVilles = mesVilles;
-            this.FirstGeneration = firstGeneration;
-            this.maGeneration = new List<Chemin>();
-            //this.mesElites = new List<Chemin>();
-            this.maPopulation = new List<Chemin>();
-            GetFirstGen();
+            this.mesGenerations = new List<Generation>();
         }
 
-        public List<Chemin> getPopulation
+        public List<Generation> GetGenerations
         {
             get
             {
-                return maPopulation;
+                return this.mesGenerations;
             }
         }
 
-        public List<Chemin> getGeneration
+        /// <summary>
+        /// la fonction permettant lancement de la creation des generations
+        /// </summary>
+        /// <param name="taillePopulation"></param> taille de la population
+        /// <param name="nombreIndividu"></param> nombre de chemin au debut de chaque generation
+        /// <param name="mesVilles"></param>
+        /// <param name="nombreCross"></param>
+        /// <param name="nombreMutation"></param>
+        /// <param name="nbrElite"></param>
+        public void Play(int taillePopulation, int nombreIndividu, List<Ville> mesVilles, int nombreCross, int nombreMutation, int nbrElite)
         {
-            get
-            {
-                return maGeneration;
-            }
-            set
-            {
-                maGeneration = value;
-            }
-        }
+            int pointArret = 0;
+            Generation firstPopulation = new Generation(nombreIndividu, mesVilles);
+            firstPopulation.AlgoRun(nombreCross, nombreMutation, nbrElite);
+            this.mesGenerations.Add(firstPopulation);
 
-        /*
-        public List<Chemin> getElites
-        {
-            get
+            while (pointArret < taillePopulation - 1)
             {
-                return mesElites;
-            }
-        }
-        */
-
-        public int nombreIndividu
-        {
-            get
-            {
-                return FirstGeneration;
-            }
-            set
-            {
-                FirstGeneration = value;
-            }
-        }
-
-        // Générer la première génration de population
-        public void GetFirstGen()
-        {
-            int combinaisons = FirstGeneration;
-            //List<Chemin> chemins = new List<Chemin>();
-            while (combinaisons != 0)
-            {
-                //Chemin chemin = new Chemin(melangeList<Ville>(mesVilles));
-                Chemin chemin = new Chemin(mesVilles.OrderBy(a => Guid.NewGuid()).ToList());
-                if (comparerChemin(chemin, maGeneration) == 0)
+                mesGenerations.Add(this.mesGenerations.Last().AlgoRun(nombreCross, nombreMutation, nbrElite));
+                if (this.mesGenerations.Last().GetGeneration[0].Score == mesGenerations[this.mesGenerations.Count - 1].GetGeneration[0].Score)
                 {
-                    maGeneration.Add(chemin);
-                    //maPopulation.Add(chemin);
-                    combinaisons--;
+                    pointArret++;
                 }
-
+                else
+                {
+                    pointArret = 0;
+                }
             }
+
+            ResultAffichage();
         }
 
-        // Faire un mélange de la génération à l'aide d'un CrossOver
-        public void XOver(int nombreCross)
+        public void ResultAffichage()
         {
-            for (int index = 0; index < nombreCross; index++)
+            int i = 1;
+            foreach (Generation po in this.mesGenerations)
             {
-                int taille = maGeneration[0].MesVilles.Count;
-                int partition1 = taille / 2;
-                int reste = taille - partition1;
-                List<Ville> CrossVille = new List<Ville>();
-                List<Chemin> CrossChemin = new List<Chemin>();
-                List<Ville> portionDroite = new List<Ville>();
-                Random r = new Random();
-                int nombreChemin = 2;
-                int randomIndex1 = r.Next(0, maGeneration.Count);
-                Chemin chemin1 = maGeneration[randomIndex1];
-                Chemin chemin2;
-                CrossChemin.Add(chemin1);
-                while (nombreChemin != 1)
+                Console.WriteLine("--------Generation " + i + "------ MOYEN: " + po.GetMoyenScoreGeneration + " M.SCORE: " + po.GetTopScoreGeneration);
+                //foreach(Chemin c in po.GetGeneration){
+                //    Console.WriteLine("--------Chemin------");
+                //    Console.WriteLine(c + c.Score.ToString());
+                //}
+                i++;
+            }
+            Console.WriteLine("Affiche de meilleur chemin de la population");
+            Console.WriteLine(GetMeilleurCheminDeLaPopulation() + " " + GetMeilleurCheminDeLaPopulation().Score.ToString());
+
+        }
+
+        public Chemin GetMeilleurCheminDeLaPopulation()
+        {
+            Chemin top = null;
+            foreach (Generation gs in this.mesGenerations)
+            {
+                foreach (Chemin c in gs.GetGeneration)
                 {
-                    int randomIndex2 = r.Next(0, maGeneration.Count);
-                    if (randomIndex2 != randomIndex1)
+                    if (top is null)
                     {
-                        chemin2 = maGeneration[randomIndex2];
-                        CrossChemin.Add(chemin2);
-                        nombreChemin--;
+                        top = c;
                     }
-                }
-                for (int i = 0; i < partition1; i++)
-                {
-                    CrossVille.Add(CrossChemin[0].MesVilles[i]);
-                    //resultVilles.Add(CrossChemin[0].MesVilles[i]);
-                }
-                for (int i = partition1; i < taille; i++)
-                {
-                    CrossVille.Add(CrossChemin[1].MesVilles[i]);
-                    portionDroite.Add(CrossChemin[0].MesVilles[i]);
-                }
-                List<Ville> VillesDoublons = checkDoublon(CrossVille);
-
-                List<Ville> resultVilles = CheminSansDoublon(VillesDoublons, portionDroite, CrossVille);
-                Chemin resultChemin = new Chemin(resultVilles);
-
-                if (comparerChemin(resultChemin, maPopulation) == 0)
-                {
-                    maPopulation.Add(resultChemin);
-                }
-
-            }
-        }
-
-        // Mutation de quelques gènes de la population pour en produire de nouvelles
-        public void Mutation(int nombreMutation)
-        {
-            int i = 0 ;
-            while(i < nombreMutation)
-            {
-                Random r = new Random();
-                int randomIndex = r.Next(0, maGeneration.Count);
-                Chemin chemin = maGeneration[randomIndex];
-                List<Ville> mesVilles = new List<Ville>(chemin.MesVilles);
-                int nombreVille = mesVilles.Count;
-                int indexVille1 = r.Next(0, nombreVille);
-                int indexVille2 = r.Next(0, nombreVille);
-                while (indexVille2 == indexVille1)
-                {
-                    indexVille2 = r.Next(nombreVille);
-                }
-                List<Ville> resultVilles = Swap(mesVilles, indexVille1, indexVille2);
-                Chemin cheminFinal = new Chemin(resultVilles);
-                if (comparerChemin(cheminFinal, maPopulation) == 0)
-                {
-                    maPopulation.Add(cheminFinal);
-                    i++;
-                }
-            }
-        }
-
-        public void Elite()
-        {
-            int nombreElite = maGeneration.Count / 5;
-            var elite = from e in maGeneration orderby e.Score select e;
-            //int i = 0;
-            for (int i = 0; i < nombreElite; i++)
-            {
-                if (comparerChemin(elite.ElementAt(i), maPopulation) == 0)
-                {
-                    maPopulation.Add(elite.ElementAt(i));
-                    //i++;
-                }
-                //maPopulation.Add(elite.ElementAt(i));
-                //mesElites.Add(elite.ElementAt(i));
-            }
-        }
-
-        public List<Chemin> BestChemin()
-        {
-            List<Chemin> bestChemins = new List<Chemin>();
-            var elite = from e in maPopulation orderby e.Score select e;
-            for (int i = 0; i < FirstGeneration; i++)
-            {
-                bestChemins.Add(elite.ElementAt(i));
-            }
-            /*
-            foreach(Chemin c in bestChemins){
-                Console.WriteLine(c);
-            }
-            */
-            return bestChemins;
-        }
-
-        public Population AlgoRun(int nombreCross, int nombreMutation)
-        {
-            //GetFirstGen();
-            XOver(nombreCross);
-            Mutation(nombreMutation);
-            Elite();
-            Population p = new Population(FirstGeneration, BestChemin());
-            //p.nombreIndividu = FirstGeneration;
-
-            return p;
-        }
-
-        public int comparerChemin(Chemin chemin, List<Chemin> maListe)
-        {
-            var cnt = from c in maListe
-                      where c.ToString() == chemin.ToString()
-                      select c;
-            return cnt.Count();
-        }
-
-        public int comparerVille(Ville ville, List<Ville> maListe)
-        {
-            var cnt = from v in maListe
-                      where v.ToString() == ville.ToString()
-                      select v;
-            return cnt.Count();
-        }
-
-        public List<Ville> checkDoublon(List<Ville> ListeATester)
-        {
-            List<Ville> maListe = new List<Ville>();
-            foreach (Ville v in ListeATester)
-            {
-                if (comparerVille(v, ListeATester) == 2)
-                {
-                    maListe.Add(v);
-                }
-            }
-            return maListe;
-        }
-
-        public List<Ville> CheminSansDoublon(List<Ville> listeDoublon, List<Ville> portionDroite, List<Ville> ListeComplete)
-        {
-
-            foreach (Ville v in listeDoublon)
-            {
-                int doublon = ListeComplete.LastIndexOf(v);
-                foreach (Ville pd in portionDroite)
-                {
-                    if (comparerVille(pd, ListeComplete) == 0)
+                    else
                     {
-                        ListeComplete[doublon] = pd;
-                        break;
+                        if (c.Score < top.Score) top = c;
                     }
+
+
                 }
             }
-
-            return ListeComplete;
+            return top;
         }
 
-        public List<Ville> Swap(List<Ville> list, int indexA, int indexB)
-        {
-            Ville tmp = list[indexA];
-            list[indexA] = list[indexB];
-            list[indexB] = tmp;
-            return list;
-        }
     }
 }
