@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 namespace Partie_Console
 {
-    class Generation
+    public class Generation
     {
         private List<Ville> mesVilles;
         private int FirstGeneration;
@@ -264,8 +264,9 @@ namespace Partie_Console
         {
             get
             {
-                IEnumerable<Chemin> listeScores = from v in this.maGeneration orderby v.Score ascending select v;
+                IEnumerable<Chemin> listeScores = from v in this.maGeneration orderby v.Score ascending select v;               
                 return (listeScores.FirstOrDefault().Score);
+
             }
 
         }

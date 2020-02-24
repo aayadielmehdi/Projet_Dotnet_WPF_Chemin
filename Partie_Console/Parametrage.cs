@@ -22,7 +22,7 @@ namespace Partie_Console
             this.nbrCheminInGeneration = _nbchemin;
             this.taille_population = _taille;
             this.crossover = _xover;
-            this.mutation = _mutation;
+            this.elite = _elite;
         }
 
         private int mutation;

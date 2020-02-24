@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace Partie_Console
 {
-    class Program
+     class Program
     {
         static void Main(string[] args)
         {
@@ -30,9 +30,10 @@ namespace Partie_Console
             Population p = new Population();
 
             // executer la fonction principale en thread
-            Thread thread = new Thread(new ThreadStart( () => p.Play(param.Taille_population,param.NbrCheminInGeneration, mesVilles, param.Crossover, param.Mutation, param.Elite)));
+            Thread thread = new Thread(new ThreadStart(() => p.Play(param.Taille_population, param.NbrCheminInGeneration, mesVilles, param.Crossover, param.Mutation, param.Elite) ));
             thread.Start();
-                      
+
+
             Console.ReadKey();
         }
     }

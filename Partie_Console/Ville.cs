@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Partie_Console
 {
-    class Ville
+    public class Ville
     {
         private string Nom;
         private float X;

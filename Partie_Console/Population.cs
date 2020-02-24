@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Partie_Console
 {
-    class Population
+    public class Population
     {
         private List<Generation> mesGenerations;
 
@@ -67,7 +67,6 @@ namespace Partie_Console
             }
             Console.WriteLine("Affiche de meilleur chemin de la population");
             Console.WriteLine(GetMeilleurCheminDeLaPopulation() + " " + GetMeilleurCheminDeLaPopulation().Score.ToString());
-
         }
 
         public Chemin GetMeilleurCheminDeLaPopulation()

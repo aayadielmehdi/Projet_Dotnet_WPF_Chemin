@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Partie_Console
 {
-    class Chemin
+    public class Chemin
     {
         private List<Ville> lesVilles;
 
