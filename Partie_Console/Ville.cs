@@ -8,6 +8,7 @@ namespace Partie_Console
         private string Nom;
         private float X;
         private float Y;
+
         public Ville(string nom, float x, float y)
         {
             this.Nom = nom;
