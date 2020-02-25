@@ -41,7 +41,7 @@ namespace Partie_Console
                     score += distance;
                 }
 
-                return score;
+                return Math.Round(score, 2);
             }
 
         }

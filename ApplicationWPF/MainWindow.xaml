@@ -22,22 +22,28 @@
         </DataTemplate>
     </Window.Resources>
 
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_Fichier">
+                <MenuItem Header="_Reset" Click="MenuItem_Click" />
+            </MenuItem>
+        </Menu>
 
-    <TabControl Margin="31,33,26,29">
-       
-        <TabItem Header="Carte">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"></ColumnDefinition>
-                    <ColumnDefinition Width="1*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
+        <TabControl Margin="31,33,26,29" Name="tab_global">
 
-                <Canvas Name="canvas_carte" Background="Blue" Grid.Column="0" Grid.Row="0" Height="513" 
+            <TabItem Header="Carte" Name="tab_carte">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Canvas Name="canvas_carte" Background="Blue" Grid.Column="0" Grid.Row="0" Height="513" 
                         VerticalAlignment="Top" HorizontalAlignment="left" Width="438" Margin="10" MouseLeftButtonDown="Choix_ville" >
-                    <Image x:Name="image" Source="image/carte.png"   />
-                </Canvas>
+                        <Image x:Name="image" Source="image/carte.png"   />
+                    </Canvas>
 
-                <!--<ListView Grid.Column="1" Margin="10,10,10,0" Height="auto" VerticalAlignment="Top" ItemsSource="{Binding villes_choisie}">
+                    <!--<ListView Grid.Column="1" Margin="10,10,10,0" Height="auto" VerticalAlignment="Top" ItemsSource="{Binding villes_choisie}">
                     <ListView.View>
                         <GridView x:Name="grid_ville">
                             <GridViewColumn Header="Name"  DisplayMemberBinding="{Binding NVile}" Width="250"  />
@@ -47,61 +53,94 @@
                     </ListView.View>
                 </ListView>-->
 
-                <!--peut on le mettre en datatemplate ??-->
-                <DataGrid Grid.Column="1" Margin="10,10,10,0" Height="auto" VerticalAlignment="Top" Name="grid_ville" ItemsSource="{Binding Liste_Ville}" IsReadOnly="True" AutoGenerateColumns="False" MouseDoubleClick="Supprimer_ville" >
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Nom" Binding="{Binding NVile}"  Width="250" />
-                        <DataGridTextColumn Header="X" Binding="{Binding XVille}"  Width="100" />
-                        <DataGridTextColumn Header="Y"  Binding="{Binding YVille}" Width="100" />
-                    </DataGrid.Columns>
-                </DataGrid>
+                    <!--peut on le mettre en datatemplate ??-->
+                    <DataGrid Grid.Column="1" Margin="10,10,10,0" Height="auto" VerticalAlignment="Top" Name="grid_ville" ItemsSource="{Binding Liste_Ville}" IsReadOnly="True" AutoGenerateColumns="False" MouseDoubleClick="Supprimer_ville" >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Nom" Binding="{Binding NomVille}"  Width="250" />
+                            <DataGridTextColumn Header="X" Binding="{Binding XVille}"  Width="100" />
+                            <DataGridTextColumn Header="Y"  Binding="{Binding YVille}" Width="100" />
+                        </DataGrid.Columns>
+                    </DataGrid>
 
-                <!--<ListBox Grid.Column="1" ItemsSource="{Binding villes_choisie}" ItemTemplate="{StaticResource maListe}" Margin="10,10,10,0"></ListBox>-->
-            </Grid>
-        </TabItem>
+                    <!--<ListBox Grid.Column="1" ItemsSource="{Binding villes_choisie}" ItemTemplate="{StaticResource maListe}" Margin="10,10,10,0"></ListBox>-->
+                </Grid>
+            </TabItem>
 
-        <TabItem Header="Listes">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"></RowDefinition>
-                    <RowDefinition Height="6*"></RowDefinition>
-                </Grid.RowDefinitions>
+            <TabItem Header="Listes" Name="tab_liste">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="6*"></RowDefinition>
+                    </Grid.RowDefinitions>
 
-                <StackPanel>
-                    <Label HorizontalAlignment="Left">Critere de recherche :</Label>
-                    <DockPanel>
-                        <Label DockPanel.Dock="Left"  >Nom de la ville</Label>
-                        <TextBox Width="300" Name="name_critere"></TextBox>
-                        <Button DockPanel.Dock="Right" Click="Recherche"  >Recherche</Button>
-                    </DockPanel>
+                    <StackPanel>
+                        <Label HorizontalAlignment="Left">Critere de recherche :</Label>
+                        <DockPanel>
+                            <Label DockPanel.Dock="Left"  >Nom de la ville</Label>
+                            <TextBox Width="300" Name="name_critere"></TextBox>
+                            <Button DockPanel.Dock="Right" Click="Recherche"  >Recherche</Button>
+                        </DockPanel>
+                    </StackPanel>
+
+                    <DataGrid Grid.Row="1" Margin="10,10,10,0" Height="auto" VerticalAlignment="Top" Name="grid_seconde" ItemsSource="{Binding Liste_Ville}" IsReadOnly="True" AutoGenerateColumns="False" MouseDoubleClick="Supprimer_ville" >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Nom" Binding="{Binding NomVille}"  Width="250" />
+                            <DataGridTextColumn Header="X" Binding="{Binding XVille}"  Width="100" />
+                            <DataGridTextColumn Header="Y"  Binding="{Binding YVille}" Width="100" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Run" Name="tab_run">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="9*"></RowDefinition>
+                        <RowDefinition Height="1*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <DataGrid Grid.Row="0" Margin="10,10,10,0" Height="auto" VerticalAlignment="Top" Name="grid_resultat" ItemsSource="{Binding MesGenerations}" IsReadOnly="True" AutoGenerateColumns="False" >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Génération"   Width="750" />
+                            <DataGridTextColumn Header="Moyen Score" Binding="{Binding GetMoyenScoreGeneration}"  Width="100" />
+                            <DataGridTextColumn Header="Top Score"  Binding="{Binding GetTopScoreGeneration}" Width="100" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="8*"></ColumnDefinition>
+                            <ColumnDefinition Width="1*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Margin="10,10,10,10" Name="txt_meilleur_chemin"  Grid.Column="0" VerticalAlignment="Stretch" IsEnabled="False" Text="Meilleur Chemin ??"></TextBlock>
+                        <Button Margin="10"  Grid.Column="1" Click="RunProgramme" Name="btn_run" >Run</Button>
+
+                    </Grid>
+
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Parametrage" Name="tab_parametrage">
+                <StackPanel HorizontalAlignment="Stretch" Name="panel_parametrage">
+                    <Label Margin="5">Nbr Chemin Start Génération</Label>
+                    <TextBox Margin="5" Text="{Binding NbrCheminParGenerationDepart}" Name="txt_nbrchemin"></TextBox>
+                    <Label Margin="5">Taille Population</Label>
+                    <TextBox Margin="5" Text="{Binding Taille_population}"></TextBox>
+                    <Label Margin="5">Mutation</Label>
+                    <TextBox Margin="5" Text="{Binding Mutation}"></TextBox>
+                    <Label Margin="5">Crossver</Label>
+                    <TextBox Margin="5" Text="{Binding Crossover}"></TextBox>
+                    <Label Margin="5">Elite</Label>
+                    <TextBox Margin="5" Text="{Binding Elite}" Name="txt_elite"></TextBox>
                 </StackPanel>
+            </TabItem>
 
-                <DataGrid Grid.Row="1" Margin="10,10,10,0" Height="auto" VerticalAlignment="Top" Name="grid_seconde" ItemsSource="{Binding Liste_Ville}" IsReadOnly="True" AutoGenerateColumns="False" MouseDoubleClick="Supprimer_ville" >
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Nom" Binding="{Binding NVile}"  Width="250" />
-                        <DataGridTextColumn Header="X" Binding="{Binding XVille}"  Width="100" />
-                        <DataGridTextColumn Header="Y"  Binding="{Binding YVille}" Width="100" />
-                    </DataGrid.Columns>
-                </DataGrid>
-
-            </Grid>
-        </TabItem>
-
-        <TabItem Header="Run"></TabItem>
+        </TabControl>
         
-        <TabItem Header="Parametrage">
-            <StackPanel HorizontalAlignment="Stretch" >
-                <Label Margin="5">Taille Population</Label>
-                <TextBox Margin="5" Text="{Binding Taille_population}"></TextBox>
-                <Label Margin="5">Mutation</Label>
-                <TextBox Margin="5" Text="{Binding Mutation}"></TextBox>
-                <Label Margin="5">Crossver</Label>
-                <TextBox Margin="5" Text="{Binding Crossover}"></TextBox>
-                <Label Margin="5">Elite</Label>
-                <TextBox Margin="5" Text="{Binding Elite}"></TextBox>
-            </StackPanel>
-        </TabItem>
-        
-    </TabControl>
+    </DockPanel>
+
+    
 
 </Window>

@@ -21,7 +21,7 @@ namespace ApplicationWPF
     {
         public Input_NomVille()
         {
-            InitializeComponent();            
+            InitializeComponent();                        
         }
 
         public string ResponseText

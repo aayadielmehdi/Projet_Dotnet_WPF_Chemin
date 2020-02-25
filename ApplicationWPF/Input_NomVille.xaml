@@ -8,7 +8,7 @@
         Title="Nom de la ville" Height="107.044" Width="378.06" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <StackPanel>
         <TextBlock Text="Entez le nom de ville" IsEnabled="False" />
-        <TextBox x:Name="ResponseTextBox" Focusable="True" />
-        <Button Content="OK" Click="OKButton_Click" HorizontalAlignment="Center" Width="100" Margin="10" />
+        <TextBox x:Name="ResponseTextBox" Focusable="True" TabIndex="0"/>
+        <Button Content="OK" Click="OKButton_Click" HorizontalAlignment="Center" Width="100" Margin="10" TabIndex="1" />
     </StackPanel>
 </Window>

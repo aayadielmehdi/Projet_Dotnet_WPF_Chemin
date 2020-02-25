@@ -81,30 +81,59 @@ namespace ApplicationWPF
             }
         }
 
-        private Dictionary<Ville_obsolete,Ellipse> Dictionnaire_ville_ellipse = new Dictionary<Ville_obsolete, Ellipse>();
+        private int nbrCheminParGenerationdepart;
 
-        static int ascii = 65; // valeur pour creer le nom des villes
-        private ObservableCollection<Ville_obsolete> villes_choisie = new ObservableCollection<Ville_obsolete>();
-        
+        public int NbrCheminParGenerationDepart
+        {
+            get { return this.nbrCheminParGenerationdepart; }
+            set{
+                if (this.nbrCheminParGenerationdepart != value)
+                {
+                    this.nbrCheminParGenerationdepart = value;
+                    this.NotifyPropertyChanged("Taille_population");
+                }
+
+            }
+        }
+
+        private Dictionary<Ville,Ellipse> Dictionnaire_ville_ellipse = new Dictionary<Ville, Ellipse>();
+
+        static int ascii = 1; // valeur pour creer le nom des villes
+
+        private ObservableCollection<Ville> villes_choisie = new ObservableCollection<Ville>();
+
+        private ObservableCollection<Generation> mes_generations;
+
+        public ObservableCollection<Generation> MesGenerations
+        {
+            get
+            {
+                return this.mes_generations;
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
+
         public void NotifyPropertyChanged(string propName)
         {
             if (this.PropertyChanged != null)
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
         }
         
-        public ObservableCollection<Ville_obsolete> Liste_Ville
+        public ObservableCollection<Ville> Liste_Ville
         {
             get
             {
                 return this.MaListe_avec_critere();
             }
         }
+
         public MainWindow()
         {
             InitializeComponent();
-            this.DataContext = this;
+            this.DataContext = this;                       
         }
+
         private void Choix_ville(object sender, MouseButtonEventArgs e)
         {
             Point p = Mouse.GetPosition(canvas_carte);
@@ -129,12 +158,12 @@ namespace ApplicationWPF
             if (name_ville == null || name_ville == "")
             {
                 MessageBox.Show("Un nom de ville sera choisi par default");
-                name_ville = ((char)ascii).ToString();
+                name_ville = "V" + (ascii).ToString();
                 ascii++;
             }
             
             // faut faire peut être apres la verification si le nom de la ville existe déjà
-            Ville_obsolete v = new Ville_obsolete(name_ville, x, y);
+            Ville v = new Ville(name_ville, (float)x, (float)y);
             villes_choisie.Add(v);
 
             // ajout de la ville dans dictionnaire afin de supprimer le ellipse a la suppression de la ville
@@ -143,11 +172,12 @@ namespace ApplicationWPF
 
             NotifyPropertyChanged("Liste_Ville");
         }
+
         private void Supprimer_ville(object sender, MouseButtonEventArgs e)
         {            
             if (MessageBox.Show("Etes vous sur de vouloir supprimer cette ville", "Information", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
             {
-                Ville_obsolete currentVille = (e.Source as DataGrid).CurrentItem as Ville_obsolete;
+                Ville currentVille = (e.Source as DataGrid).CurrentItem as Ville;
                 
                 // supprimer l'ellipse du canvas aussi 
                 canvas_carte.Children.Remove(this.Dictionnaire_ville_ellipse[currentVille]);
@@ -156,7 +186,8 @@ namespace ApplicationWPF
                 NotifyPropertyChanged("Liste_Ville");
             }
         }
-        public ObservableCollection<Ville_obsolete> MaListe_avec_critere()
+
+        public ObservableCollection<Ville> MaListe_avec_critere()
         {
             if (name_critere.Text == "")
             {
@@ -165,21 +196,136 @@ namespace ApplicationWPF
             else
             {
                 var result = from v in this.villes_choisie
-                             where v.NVile.ToString().ToUpper() == name_critere.Text.ToUpper()
+                             where v.NomVille.ToString().ToUpper() == name_critere.Text.ToUpper()
                              select v;
 
-                return new ObservableCollection<Ville_obsolete>(result);
+                return new ObservableCollection<Ville>(result);
             }
         }
+
         private void Recherche(object sender, RoutedEventArgs e)
         {
             NotifyPropertyChanged("Liste_Ville");
         }
-    
+               
+        private void DessinerChemin(Chemin c)
+        {
+            for (int i = 0; i < c.MesVilles.Count() - 1; i++)
+            {
+                Ville v1 = c.MesVilles[i];
+                Ville v2 = c.MesVilles[i + 1];
+
+                var uneLigne = new Line
+                {
+                    X1 = v1.XVille,
+                    Y1 = v1.YVille,
+                    X2 = v2.XVille,
+                    Y2 = v2.YVille,
+                    Stroke = new SolidColorBrush(Colors.Red),
+                    StrokeThickness = 2
+                };
+
+                canvas_carte.Children.Add(uneLigne);
+                
+            }
+        }
+
+        private void GriserTT()
+        {
+            canvas_carte.IsEnabled = false;
+            grid_ville.IsEnabled = false;
+            grid_seconde.IsEnabled = false;
+            panel_parametrage.IsEnabled = false;
+            btn_run.IsEnabled = false;
+        }
+
+        private void Reset()
+        {
+            canvas_carte.IsEnabled = true;
+            grid_ville.IsEnabled = true;
+            grid_seconde.IsEnabled = true;
+            panel_parametrage.IsEnabled = true;
+            btn_run.IsEnabled = true;
+
+            this.mes_generations.Clear();
+
+            this.NotifyPropertyChanged("MesGenerations");
+
+            txt_meilleur_chemin.Text = "Meilleur Chemin ??";
+
+            // suppression des lignes 
+            foreach (object o in canvas_carte.Children)
+            {
+                if (o.GetType() == typeof(Line))
+                {
+                    canvas_carte.Children.Remove((Line) o);
+                }
+            }
+            tab_global.SelectedIndex = 0;
+
+        }
+
+        private void RunProgramme(object sender, RoutedEventArgs e)
+        {
+            
+            if (Verification() == true)
+            {
+                if (MessageBox.Show("Vos paramétrage :\nNb de chemin: " + this.nbrCheminParGenerationdepart + "\nTaille Population: " + this.taille_population +
+                    "\nElite: " + this.elite +
+                    "\nMutation: " + this.mutation +
+                    "\nXOver: " + this.crossover +
+                    "\nContinuer ou pas ?", "Information", MessageBoxButton.OKCancel) == MessageBoxResult.Cancel) return; 
+                    
+                Mouse.OverrideCursor = Cursors.Wait;
+
+                Population pop = new Population();
+
+                pop.Play(this.taille_population, this.nbrCheminParGenerationdepart, new List<Ville>(this.villes_choisie), this.crossover, this.mutation, this.elite);
+
+                this.mes_generations = new ObservableCollection<Generation>(pop.GetGenerations);
+
+                this.DessinerChemin(pop.GetMeilleurCheminDeLaPopulation());
+
+                this.txt_meilleur_chemin.Text = "Le Meilleur Chemin est : " + pop.GetMeilleurCheminDeLaPopulation().ToString() + " avec un score de : " + pop.GetMeilleurCheminDeLaPopulation().Score.ToString();
+
+                this.GriserTT();
+
+                Mouse.OverrideCursor = null;
+
+                this.NotifyPropertyChanged("MesGenerations");
+            }
+        }
+
+        private bool Verification()
+        {
+            //verification des paramettre 
+            if (this.villes_choisie.Count == 0)
+            {
+                MessageBox.Show("Ya plus de ville dans votre liste !! \nVeuillez choisir des villes :)", "Vérification", MessageBoxButton.OK);
+                tab_global.SelectedIndex = 0;
+                return false;
+            }
+            else if (this.elite > this.nbrCheminParGenerationdepart)
+            {
+                MessageBox.Show("Le parametre Elite est sup au nombre de chemin par génération", "Vérification", MessageBoxButton.OK);
+                tab_global.SelectedIndex = 3;
+                txt_elite.Focus();
+                return false;
+            }
+            else if (this.nbrCheminParGenerationdepart == 0 )
+            {
+                MessageBox.Show("Le parametre Nbr chemin Start n'est Signalé", "Vérification", MessageBoxButton.OK);
+                tab_global.SelectedIndex = 3;
+                txt_nbrchemin.Focus();
+                return false;
+            }
+            return true;
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            this.Reset();
+        }
     }
 
-
-    // a la fin du travail faire des liens entre les villes avec des fleches pour connaitre le plus court chemin.
-    // n'oublie pas threads
-    // ajouter un parametre au niveau pour choisir le nombre  de chemin en chaque generation
 }

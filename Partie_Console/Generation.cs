@@ -9,7 +9,7 @@ namespace Partie_Console
         private int FirstGeneration;
         private List<Chemin> maGeneration;
         private List<Chemin> maPopulation;
-
+        
         public int NombreIndividu
         {
             get
@@ -265,7 +265,7 @@ namespace Partie_Console
             get
             {
                 IEnumerable<Chemin> listeScores = from v in this.maGeneration orderby v.Score ascending select v;               
-                return (listeScores.FirstOrDefault().Score);
+                return Math.Round(listeScores.FirstOrDefault().Score,2);
 
             }
 
@@ -280,7 +280,7 @@ namespace Partie_Console
                 {
                     result += c.Score;
                 }
-                return result / this.maGeneration.Count;
+                return Math.Round(result / this.maGeneration.Count,2);
             }
         }
     
