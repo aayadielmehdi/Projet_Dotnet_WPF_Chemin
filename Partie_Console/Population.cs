@@ -32,14 +32,16 @@ namespace Partie_Console
         /// <param name="nbrElite"></param>
         public void Play(int taillePopulation, int nombreIndividu, List<Ville> mesVilles, int nombreCross, int nombreMutation, int nbrElite)
         {
+            int cntGeneration = 1;
             int pointArret = 0;
-            Generation firstPopulation = new Generation(nombreIndividu, mesVilles);
-            firstPopulation.AlgoRun(nombreCross, nombreMutation, nbrElite);
+            Generation firstPopulation = new Generation(nombreIndividu, mesVilles , "Génération" + cntGeneration);
+            firstPopulation.AlgoRun(nombreCross, nombreMutation, nbrElite, "Génération" + cntGeneration);
             this.mesGenerations.Add(firstPopulation);
 
             while (pointArret < taillePopulation - 1)
             {
-                mesGenerations.Add(this.mesGenerations.Last().AlgoRun(nombreCross, nombreMutation, nbrElite));
+                cntGeneration++;
+                this.mesGenerations.Add(this.mesGenerations.Last().AlgoRun(nombreCross, nombreMutation, nbrElite, "Génération" + cntGeneration));
                 if (this.mesGenerations.Last().GetGeneration[0].Score == mesGenerations[this.mesGenerations.Count - 1].GetGeneration[0].Score)
                 {
                     pointArret++;

@@ -102,7 +102,7 @@
 
                     <DataGrid Grid.Row="0" Margin="10,10,10,0" Height="auto" VerticalAlignment="Top" Name="grid_resultat" ItemsSource="{Binding MesGenerations}" IsReadOnly="True" AutoGenerateColumns="False" >
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Génération"   Width="750" />
+                            <DataGridTextColumn Header="Génération"  Binding="{Binding NameGeneration}"   Width="750" />
                             <DataGridTextColumn Header="Moyen Score" Binding="{Binding GetMoyenScoreGeneration}"  Width="100" />
                             <DataGridTextColumn Header="Top Score"  Binding="{Binding GetTopScoreGeneration}" Width="100" />
                         </DataGrid.Columns>
@@ -126,7 +126,7 @@
                 <StackPanel HorizontalAlignment="Stretch" Name="panel_parametrage">
                     <Label Margin="5">Nbr Chemin Start Génération</Label>
                     <TextBox Margin="5" Text="{Binding NbrCheminParGenerationDepart}" Name="txt_nbrchemin"></TextBox>
-                    <Label Margin="5">Taille Population</Label>
+                    <Label Margin="5">Taille Population (Nbr de génération qu'on va avoir)</Label>
                     <TextBox Margin="5" Text="{Binding Taille_population}"></TextBox>
                     <Label Margin="5">Mutation</Label>
                     <TextBox Margin="5" Text="{Binding Mutation}"></TextBox>
@@ -134,13 +134,14 @@
                     <TextBox Margin="5" Text="{Binding Crossover}"></TextBox>
                     <Label Margin="5">Elite</Label>
                     <TextBox Margin="5" Text="{Binding Elite}" Name="txt_elite"></TextBox>
+                    <Label Margin="5,5,5,0" HorizontalAlignment="Center">Faite attention au parametre saisie !! Elles doivent être logique.</Label>
                 </StackPanel>
             </TabItem>
 
         </TabControl>
-        
+
     </DockPanel>
 
-    
+
 
 </Window>

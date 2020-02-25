@@ -82,11 +82,11 @@ namespace ApplicationWPF
         }
 
         private int nbrCheminParGenerationdepart;
-
         public int NbrCheminParGenerationDepart
         {
             get { return this.nbrCheminParGenerationdepart; }
-            set{
+            set
+            {
                 if (this.nbrCheminParGenerationdepart != value)
                 {
                     this.nbrCheminParGenerationdepart = value;
@@ -96,7 +96,7 @@ namespace ApplicationWPF
             }
         }
 
-        private Dictionary<Ville,Ellipse> Dictionnaire_ville_ellipse = new Dictionary<Ville, Ellipse>();
+        private Dictionary<Ville, Ellipse> Dictionnaire_ville_ellipse = new Dictionary<Ville, Ellipse>();
 
         static int ascii = 1; // valeur pour creer le nom des villes
 
@@ -108,6 +108,7 @@ namespace ApplicationWPF
         {
             get
             {
+                //return this.mes_generations;
                 return this.mes_generations;
             }
         }
@@ -119,7 +120,7 @@ namespace ApplicationWPF
             if (this.PropertyChanged != null)
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
         }
-        
+
         public ObservableCollection<Ville> Liste_Ville
         {
             get
@@ -131,7 +132,7 @@ namespace ApplicationWPF
         public MainWindow()
         {
             InitializeComponent();
-            this.DataContext = this;                       
+            this.DataContext = this;
         }
 
         private void Choix_ville(object sender, MouseButtonEventArgs e)
@@ -145,8 +146,8 @@ namespace ApplicationWPF
             //SolidColorBrush rouge = new SolidColorBrush();
             //rouge.Color = Colors.Red;
             ellipse.Fill = Brushes.Red;
-            Canvas.SetTop(ellipse, y);
-            Canvas.SetLeft(ellipse, x);
+            Canvas.SetTop(ellipse, y - 5);
+            Canvas.SetLeft(ellipse, x - 5);
             canvas_carte.Children.Add(ellipse);
 
             var dialog = new Input_NomVille();
@@ -161,7 +162,7 @@ namespace ApplicationWPF
                 name_ville = "V" + (ascii).ToString();
                 ascii++;
             }
-            
+
             // faut faire peut être apres la verification si le nom de la ville existe déjà
             Ville v = new Ville(name_ville, (float)x, (float)y);
             villes_choisie.Add(v);
@@ -174,14 +175,14 @@ namespace ApplicationWPF
         }
 
         private void Supprimer_ville(object sender, MouseButtonEventArgs e)
-        {            
+        {
             if (MessageBox.Show("Etes vous sur de vouloir supprimer cette ville", "Information", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
             {
                 Ville currentVille = (e.Source as DataGrid).CurrentItem as Ville;
-                
+
                 // supprimer l'ellipse du canvas aussi 
                 canvas_carte.Children.Remove(this.Dictionnaire_ville_ellipse[currentVille]);
-                
+
                 villes_choisie.Remove(currentVille);
                 NotifyPropertyChanged("Liste_Ville");
             }
@@ -207,7 +208,7 @@ namespace ApplicationWPF
         {
             NotifyPropertyChanged("Liste_Ville");
         }
-               
+
         private void DessinerChemin(Chemin c)
         {
             for (int i = 0; i < c.MesVilles.Count() - 1; i++)
@@ -226,7 +227,7 @@ namespace ApplicationWPF
                 };
 
                 canvas_carte.Children.Add(uneLigne);
-                
+
             }
         }
 
@@ -247,35 +248,38 @@ namespace ApplicationWPF
             panel_parametrage.IsEnabled = true;
             btn_run.IsEnabled = true;
 
-            this.mes_generations.Clear();
+            if (this.mes_generations != null) this.mes_generations.Clear();
 
             this.NotifyPropertyChanged("MesGenerations");
 
             txt_meilleur_chemin.Text = "Meilleur Chemin ??";
 
             // suppression des lignes 
-            foreach (object o in canvas_carte.Children)
+
+            for (int i = 0; i < canvas_carte.Children.Count; i++)
             {
-                if (o.GetType() == typeof(Line))
+                if (canvas_carte.Children[i].GetType().Equals(typeof(Line)))
                 {
-                    canvas_carte.Children.Remove((Line) o);
+                    canvas_carte.Children.Remove((Line)canvas_carte.Children[i]);
+                    i--;
                 }
             }
+
             tab_global.SelectedIndex = 0;
 
         }
 
         private void RunProgramme(object sender, RoutedEventArgs e)
         {
-            
+
             if (Verification() == true)
             {
                 if (MessageBox.Show("Vos paramétrage :\nNb de chemin: " + this.nbrCheminParGenerationdepart + "\nTaille Population: " + this.taille_population +
                     "\nElite: " + this.elite +
                     "\nMutation: " + this.mutation +
                     "\nXOver: " + this.crossover +
-                    "\nContinuer ou pas ?", "Information", MessageBoxButton.OKCancel) == MessageBoxResult.Cancel) return; 
-                    
+                    "\nContinuer ou pas ?", "Information", MessageBoxButton.OKCancel) == MessageBoxResult.Cancel) return;
+
                 Mouse.OverrideCursor = Cursors.Wait;
 
                 Population pop = new Population();
@@ -312,13 +316,14 @@ namespace ApplicationWPF
                 txt_elite.Focus();
                 return false;
             }
-            else if (this.nbrCheminParGenerationdepart == 0 )
+            else if (this.nbrCheminParGenerationdepart == 0)
             {
                 MessageBox.Show("Le parametre Nbr chemin Start n'est Signalé", "Vérification", MessageBoxButton.OK);
                 tab_global.SelectedIndex = 3;
                 txt_nbrchemin.Focus();
                 return false;
             }
+
             return true;
         }
 
@@ -326,6 +331,7 @@ namespace ApplicationWPF
         {
             this.Reset();
         }
+
     }
 
 }

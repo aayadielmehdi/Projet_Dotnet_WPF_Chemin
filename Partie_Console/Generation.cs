@@ -9,7 +9,9 @@ namespace Partie_Console
         private int FirstGeneration;
         private List<Chemin> maGeneration;
         private List<Chemin> maPopulation;
-        
+
+        private string nameGeneration;
+
         public int NombreIndividu
         {
             get
@@ -19,6 +21,14 @@ namespace Partie_Console
             set
             {
                 this.FirstGeneration = value;
+            }
+        }
+
+        public String NameGeneration
+        {
+            get
+            {
+                return this.nameGeneration;
             }
         }
 
@@ -42,20 +52,22 @@ namespace Partie_Console
             }
         }
 
-        public Generation(int firstGeneration, List<Chemin> mesChemins)
+        public Generation(int firstGeneration, List<Chemin> mesChemins , string name_gen = null  )
         {
             this.FirstGeneration = firstGeneration;
             this.maGeneration = new List<Chemin>(mesChemins);
             this.maPopulation = new List<Chemin>();
+            this.nameGeneration = name_gen;
         }
 
-        public Generation(int firstGeneration, List<Ville> mesVilles)
+        public Generation(int firstGeneration, List<Ville> mesVilles , string name_gen = null)
         {
             this.mesVilles = mesVilles;
             this.FirstGeneration = firstGeneration;
             this.maGeneration = new List<Chemin>();
             //this.mesElites = new List<Chemin>();
             this.maPopulation = new List<Chemin>();
+            this.nameGeneration = name_gen;
             GetFirstGen();
         }
 
@@ -232,12 +244,12 @@ namespace Partie_Console
         /// <param name="nombreCross"></param>
         /// <param name="nombreMutation"></param>
         /// <returns></returns>
-        public Generation AlgoRun(int nombreCross, int nombreMutation, int nbrelite)
+        public Generation AlgoRun(int nombreCross, int nombreMutation, int nbrelite , string namegeneration)
         {
             XOver(nombreCross);
             Mutation(nombreMutation);
             Elite(nbrelite);
-            Generation p = new Generation(FirstGeneration, BestChemin());
+            Generation p = new Generation(FirstGeneration, BestChemin() , namegeneration);
             return p;
         }
 
