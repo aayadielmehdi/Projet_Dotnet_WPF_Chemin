@@ -23,6 +23,12 @@ namespace Partie_Console
             this.taille_population = _taille;
             this.crossover = _xover;
             this.elite = _elite;
+            this.cntVille = 1;
+        }
+
+        public Parametrage()
+        {
+            this.cntVille = 1;
         }
 
         private int mutation;
@@ -90,5 +96,20 @@ namespace Partie_Console
                 }
             }
         }
+
+        private int cntVille;
+
+        public int ConteurVille
+        {
+            get { return this.cntVille; }
+            set
+            {
+                if (this.cntVille != value)
+                {
+                    this.cntVille = value;
+                }
+            }
+        }
+
     }
 }

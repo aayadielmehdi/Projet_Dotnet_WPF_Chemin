@@ -25,84 +25,27 @@ namespace ApplicationWPF
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        private int mutation;
-        public int Mutation
+        private Parametrage paramApplication = new Parametrage();
+
+        public Parametrage MesParams
         {
-            get { return this.mutation; }
-            set
+            get
             {
-                if (this.mutation != value)
-                {
-                    this.mutation = value;
-                    this.NotifyPropertyChanged("Mutation");
-                }
+                return this.paramApplication;
             }
-        }
 
-        private int crossover;
-        public int Crossover
-        {
-            get { return this.crossover; }
             set
             {
-                if (this.crossover != value)
-                {
-                    this.crossover = value;
-                    this.NotifyPropertyChanged("Crossover");
-                }
-            }
-        }
-
-        private int elite;
-        public int Elite
-        {
-            get { return this.elite; }
-            set
-            {
-                if (this.elite != value)
-                {
-                    this.elite = value;
-                    this.NotifyPropertyChanged("Elite");
-                }
-            }
-        }
-
-        private int taille_population;
-        public int Taille_population
-        {
-            get { return this.taille_population; }
-            set
-            {
-                if (this.taille_population != value)
-                {
-                    this.taille_population = value;
-                    this.NotifyPropertyChanged("Taille_population");
-                }
-            }
-        }
-
-        private int nbrCheminParGenerationdepart;
-        public int NbrCheminParGenerationDepart
-        {
-            get { return this.nbrCheminParGenerationdepart; }
-            set
-            {
-                if (this.nbrCheminParGenerationdepart != value)
-                {
-                    this.nbrCheminParGenerationdepart = value;
-                    this.NotifyPropertyChanged("Taille_population");
-                }
-
+                this.paramApplication = value;
+                this.NotifyPropertyChanged("MesParams");
             }
         }
 
         private Dictionary<Ville, Ellipse> Dictionnaire_ville_ellipse = new Dictionary<Ville, Ellipse>();
 
-        static int ascii = 1; // valeur pour creer le nom des villes
-
         private ObservableCollection<Ville> villes_choisie = new ObservableCollection<Ville>();
 
-        private ObservableCollection<Generation> mes_generations;
+        private ObservableCollection<Generation> mes_generations = new ObservableCollection<Generation>();
 
         public ObservableCollection<Generation> MesGenerations
         {
@@ -140,16 +83,7 @@ namespace ApplicationWPF
             Point p = Mouse.GetPosition(canvas_carte);
             double x = p.X;
             double y = p.Y;
-            Ellipse ellipse = new Ellipse();
-            ellipse.Height = 10;
-            ellipse.Width = 10;
-            //SolidColorBrush rouge = new SolidColorBrush();
-            //rouge.Color = Colors.Red;
-            ellipse.Fill = Brushes.Red;
-            Canvas.SetTop(ellipse, y - 5);
-            Canvas.SetLeft(ellipse, x - 5);
-            canvas_carte.Children.Add(ellipse);
-
+            
             var dialog = new Input_NomVille();
             string name_ville = null;
             if (dialog.ShowDialog() == true)
@@ -159,19 +93,35 @@ namespace ApplicationWPF
             if (name_ville == null || name_ville == "")
             {
                 MessageBox.Show("Un nom de ville sera choisi par default");
-                name_ville = "V" + (ascii).ToString();
-                ascii++;
+                name_ville = "V" + (this.paramApplication.ConteurVille).ToString();
+                this.paramApplication.ConteurVille++;
             }
 
-            // faut faire peut être apres la verification si le nom de la ville existe déjà
-            Ville v = new Ville(name_ville, (float)x, (float)y);
-            villes_choisie.Add(v);
+           
+            if (ExistanceNameVille(name_ville))
+            {
+                MessageBox.Show("Ce nom de ville existe déjà !! ", "Attention", MessageBoxButton.OK);
+            }
+            else
+            {
+                // faut faire peut être apres la verification si le nom de la ville existe déjà
+                Ville v = new Ville(name_ville, (float)x, (float)y);
+                Ellipse ellipse = new Ellipse();
+                ellipse.Height = 10;
+                ellipse.Width = 10;
+                //SolidColorBrush rouge = new SolidColorBrush();
+                //rouge.Color = Colors.Red;
+                ellipse.Fill = Brushes.Red;
+                Canvas.SetTop(ellipse, y - 5);
+                Canvas.SetLeft(ellipse, x - 5);
+                canvas_carte.Children.Add(ellipse);
 
-            // ajout de la ville dans dictionnaire afin de supprimer le ellipse a la suppression de la ville
-            Dictionnaire_ville_ellipse.Add(v, ellipse);
-
-
-            NotifyPropertyChanged("Liste_Ville");
+                villes_choisie.Add(v);
+                // ajout de la ville dans dictionnaire afin de supprimer le ellipse a la suppression de la ville
+                Dictionnaire_ville_ellipse.Add(v, ellipse);
+                NotifyPropertyChanged("Liste_Ville");
+            }
+            
         }
 
         private void Supprimer_ville(object sender, MouseButtonEventArgs e)
@@ -184,6 +134,7 @@ namespace ApplicationWPF
                 canvas_carte.Children.Remove(this.Dictionnaire_ville_ellipse[currentVille]);
 
                 villes_choisie.Remove(currentVille);
+
                 NotifyPropertyChanged("Liste_Ville");
             }
         }
@@ -274,17 +225,17 @@ namespace ApplicationWPF
 
             if (Verification() == true)
             {
-                if (MessageBox.Show("Vos paramétrage :\nNb de chemin: " + this.nbrCheminParGenerationdepart + "\nTaille Population: " + this.taille_population +
-                    "\nElite: " + this.elite +
-                    "\nMutation: " + this.mutation +
-                    "\nXOver: " + this.crossover +
+                if (MessageBox.Show("Vos paramétrage :\nNb de chemin: " + this.paramApplication.NbrCheminInGeneration + "\nTaille Population: " + this.paramApplication.Taille_population +
+                    "\nElite: " + this.paramApplication.Elite +
+                    "\nMutation: " + this.paramApplication.Mutation +
+                    "\nXOver: " + this.paramApplication.Crossover +
                     "\nContinuer ou pas ?", "Information", MessageBoxButton.OKCancel) == MessageBoxResult.Cancel) return;
 
                 Mouse.OverrideCursor = Cursors.Wait;
 
                 Population pop = new Population();
 
-                pop.Play(this.taille_population, this.nbrCheminParGenerationdepart, new List<Ville>(this.villes_choisie), this.crossover, this.mutation, this.elite);
+                pop.Play(this.paramApplication.Taille_population, this.paramApplication.NbrCheminInGeneration, new List<Ville>(this.villes_choisie), this.paramApplication.Crossover, this.paramApplication.Mutation, this.paramApplication.Elite);
 
                 this.mes_generations = new ObservableCollection<Generation>(pop.GetGenerations);
 
@@ -298,6 +249,7 @@ namespace ApplicationWPF
 
                 this.NotifyPropertyChanged("MesGenerations");
             }
+
         }
 
         private bool Verification()
@@ -309,20 +261,24 @@ namespace ApplicationWPF
                 tab_global.SelectedIndex = 0;
                 return false;
             }
-            else if (this.elite > this.nbrCheminParGenerationdepart)
+            else if (this.paramApplication.Elite > this.paramApplication.NbrCheminInGeneration)
             {
                 MessageBox.Show("Le parametre Elite est sup au nombre de chemin par génération", "Vérification", MessageBoxButton.OK);
                 tab_global.SelectedIndex = 3;
                 txt_elite.Focus();
                 return false;
             }
-            else if (this.nbrCheminParGenerationdepart == 0)
+            else if (this.paramApplication.NbrCheminInGeneration == 0)
             {
                 MessageBox.Show("Le parametre Nbr chemin Start n'est Signalé", "Vérification", MessageBoxButton.OK);
                 tab_global.SelectedIndex = 3;
                 txt_nbrchemin.Focus();
                 return false;
             }
+
+            // faire la verification des parametres saisie pour ne pas cause des boucles infini 
+            // nbrchemin ! > nbrcross + nbrmutation + elite
+            // c'est importante
 
             return true;
         }
@@ -331,6 +287,28 @@ namespace ApplicationWPF
         {
             this.Reset();
         }
+
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+
+            System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+
+        }
+
+        private bool ExistanceNameVille(string vll)
+        {
+            var result = from v in this.villes_choisie
+                         where v.NomVille.ToString().ToUpper() == vll.ToUpper()
+                         select v;
+
+            if (result.Count() != 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
 
     }
 

@@ -8,17 +8,13 @@
         Title="Our Application" Height="744.828" Width="1079.31" WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
-        <DataTemplate x:Key="maListe">
-            <Grid>
-                <!--<Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Text="{Binding NVile}" Grid.Column="0"/>
-                <TextBlock Text="{Binding XVille}" Grid.Column="1"/>
-                <TextBlock Text="{Binding YVille}" Grid.Column="2"/>-->
-            </Grid>
+        <DataTemplate x:Key="mesParametrage" >
+
+            <StackPanel>
+
+
+            </StackPanel>
+
         </DataTemplate>
     </Window.Resources>
 
@@ -125,18 +121,19 @@
             <TabItem Header="Parametrage" Name="tab_parametrage">
                 <StackPanel HorizontalAlignment="Stretch" Name="panel_parametrage">
                     <Label Margin="5">Nbr Chemin Start Génération</Label>
-                    <TextBox Margin="5" Text="{Binding NbrCheminParGenerationDepart}" Name="txt_nbrchemin"></TextBox>
+                    <TextBox Margin="5" Text="{Binding MesParams.NbrCheminInGeneration}" Name="txt_nbrchemin"  PreviewTextInput="NumberValidationTextBox"></TextBox>
                     <Label Margin="5">Taille Population (Nbr de génération qu'on va avoir)</Label>
-                    <TextBox Margin="5" Text="{Binding Taille_population}"></TextBox>
+                    <TextBox Margin="5" Text="{Binding MesParams.Taille_population}" PreviewTextInput="NumberValidationTextBox"></TextBox>
                     <Label Margin="5">Mutation</Label>
-                    <TextBox Margin="5" Text="{Binding Mutation}"></TextBox>
+                    <TextBox Margin="5" Text="{Binding MesParams.Mutation}" PreviewTextInput="NumberValidationTextBox"></TextBox>
                     <Label Margin="5">Crossver</Label>
-                    <TextBox Margin="5" Text="{Binding Crossover}"></TextBox>
+                    <TextBox Margin="5" Text="{Binding MesParams.Crossover}" PreviewTextInput="NumberValidationTextBox"></TextBox>
                     <Label Margin="5">Elite</Label>
-                    <TextBox Margin="5" Text="{Binding Elite}" Name="txt_elite"></TextBox>
+                    <TextBox Margin="5" Text="{Binding MesParams.Elite}" Name="txt_elite" PreviewTextInput="NumberValidationTextBox"></TextBox>
                     <Label Margin="5,5,5,0" HorizontalAlignment="Center">Faite attention au parametre saisie !! Elles doivent être logique.</Label>
                 </StackPanel>
             </TabItem>
+
 
         </TabControl>
 
