@@ -3,9 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SQLite;
 
 namespace Partie_Console
 {
+    /// <summary>
+    ///  parametrage de l'application , tous ce qui est ( population , chemin , xover , mutation ).
+    /// </summary>
+    [Table("Parametrage")]
     public class Parametrage 
     {        
         /// <summary>
@@ -24,15 +29,38 @@ namespace Partie_Console
             this.crossover = _xover;
             this.elite = _elite;
             this.cntVille = 1;
+            this.id = 1;
         }
 
         public Parametrage()
         {
             this.cntVille = 1;
+            this.id = 1;
         }
+
+        private int id;
+
+        [Column("Id"), PrimaryKey]
+        public int Id
+        {
+            get
+            {
+                return this.id;
+            }
+            set
+            {
+                if (this.id != value)
+                {
+                    this.id = value;
+                }
+            }
+        }
+
+
 
         private int mutation;
 
+        [Column("Mutation")]
         public int Mutation
         {
             get { return this.mutation; }
@@ -46,6 +74,8 @@ namespace Partie_Console
         }
 
         private int crossover;
+
+        [Column("Crossover")]
         public int Crossover
         {
             get { return this.crossover; }
@@ -59,6 +89,8 @@ namespace Partie_Console
         }
 
         private int elite;
+
+        [Column("Elite")]
         public int Elite
         {
             get { return this.elite; }
@@ -72,6 +104,8 @@ namespace Partie_Console
         }
 
         private int taille_population;
+
+        [Column("Taille_population")]
         public int Taille_population
         {
             get { return this.taille_population; }
@@ -85,6 +119,8 @@ namespace Partie_Console
         }
 
         private int nbrCheminInGeneration;
+
+        [Column("NbrCheminInGeneration")]
         public int NbrCheminInGeneration
         {
             get { return this.nbrCheminInGeneration; }
@@ -99,6 +135,7 @@ namespace Partie_Console
 
         private int cntVille;
 
+        [Column("ConteurVille")]
         public int ConteurVille
         {
             get { return this.cntVille; }

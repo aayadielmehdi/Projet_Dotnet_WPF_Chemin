@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ApplicationWPF"
         mc:Ignorable="d"
-        Title="Our Application" Height="744.828" Width="1079.31" WindowStartupLocation="CenterScreen">
+        Title="Our Application" Height="744.828" Width="1079.31" WindowStartupLocation="CenterScreen" Closed="Window_Closed">
 
     <Window.Resources>
         <DataTemplate x:Key="mesParametrage" >
@@ -21,7 +21,8 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_Fichier">
-                <MenuItem Header="_Reset" Click="MenuItem_Click" />
+                <MenuItem Header="_Reset" Click="ResetRun" />
+                <MenuItem Header="_ResetDB" Click="ResetDB" Name="menuresetdb" />
             </MenuItem>
         </Menu>
 

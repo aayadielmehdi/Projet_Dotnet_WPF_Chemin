@@ -1,14 +1,20 @@
 using System;
 using System.Text;
+using SQLite;
 
 namespace Partie_Console
 {
+    [Table("Ville")]
     public class Ville
     {
         private string Nom;
         private float X;
         private float Y;
 
+        public Ville()
+        {
+
+        }
         public Ville(string nom, float x, float y)
         {
             this.Nom = nom;
@@ -16,36 +22,49 @@ namespace Partie_Console
             this.Y = y;
         }
 
-        public string NomVille {
-            get {
+        [Column("NomVille"), PrimaryKey] // le nom de la ville est ma cle primaire aussi 
+        public string NomVille
+        {
+            get
+            {
                 return Nom;
             }
-            set {
+            set
+            {
                 Nom = value;
             }
         }
 
-         public float XVille {
-            get {
+        [Column("XVille")]
+        public float XVille
+        {
+            get
+            {
                 return X;
             }
-            set {
+            set
+            {
                 X = value;
             }
         }
 
-         public float YVille {
-            get {
+        [Column("YVille")]
+        public float YVille
+        {
+            get
+            {
                 return Y;
             }
-            set {
+            set
+            {
                 Y = value;
             }
         }
 
-        public override String ToString(){
+        public override String ToString()
+        {
             StringBuilder sb = new StringBuilder();
-            sb.Append(NomVille+"("+XVille+";"+YVille+")");
+            sb.Append(NomVille + "(" + XVille + ";" + YVille + ")");
             return sb.ToString();
         }
 
