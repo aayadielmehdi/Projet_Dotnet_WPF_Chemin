@@ -13,8 +13,9 @@
 > ### Mamadou Saliou BAH
 > - Projet Console (Algorithme et fonctionnement général)
 > - tous les algorithmes ont réalisés
-> - [x]
-> - [ ]
+- [x] Write the press release
+- [ ] Update the website
+- [ ] Contact the media
 
 ## Réalisations
 
