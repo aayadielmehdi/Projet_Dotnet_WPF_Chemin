@@ -13,25 +13,22 @@
 > ### Mamadou Saliou BAH
 > - Projet Console (Algorithme et fonctionnement général)
 > - tous les algorithmes ont réalisés
-> - [ ] Update the website
-> - [ ] Contact the media
-- [x] Write the press release
 
 ## Réalisations
 
 | Tâches WPF                                                            | Réalisations   |
 | :---                                                                  | :---           |
-| écran de visualisation et d'édition des données                       | - [x] Write the press release  |
-| écran de paramétrage de la simulation                                 | - [x] réalisé  |
-| écran de simulation de visualisation des générations successives      | - [x] réalisé  |
-| sauvegarde des données dans **SQLite**                                | - [x] réalisé  |
-| interface graphique devra être responsive                             | - [x] réalisé  |
+| écran de visualisation et d'édition des données                       | **réalisé**    |
+| écran de paramétrage de la simulation                                 | **réalisé**    |
+| écran de simulation de visualisation des générations successives      | **réalisé**    |
+| sauvegarde des données dans **SQLite**                                | **réalisé**    |
+| interface graphique devra être responsive                             | **réalisé**    |
 
 
-| Tâches de la console                                                  | Réalisations    |
-| :---                                                                  | :---            |
-| Code d'obtention de la première génération                            | -[X] réalisé    |
-| Code de CrossOver                                                     | - [x] réalisé   |
-| Code de Mutation                                                      |   -[x] réalisé  |
-| Code de choix des Elites                                              | - [ x ] réalisé |
-| Sélection de la prochaine génération en boucle selon le nombre voulu  | - [x] réalisé   |
+| Tâches de la console                                                  | Réalisations   |
+| :---                                                                  | :---           |
+| Code d'obtention de la première génération                            | **réalisé**    |
+| Code de CrossOver                                                     | **réalisé**    |
+| Code de Mutation                                                      | **réalisé**    |
+| Code de choix des Elites                                              | **réalisé**    |
+| Sélection de la prochaine génération en boucle selon le nombre voulu  | **réalisé**    |
