@@ -21,7 +21,7 @@
 
 | Tâches WPF                                                            | Réalisations   |
 | :---                                                                  | :---           |
-| écran de visualisation et d'édition des données                       | - [x] réalisé  |
+| écran de visualisation et d'édition des données                       | - [x] Write the press release  |
 | écran de paramétrage de la simulation                                 | - [x] réalisé  |
 | écran de simulation de visualisation des générations successives      | - [x] réalisé  |
 | sauvegarde des données dans **SQLite**                                | - [x] réalisé  |
