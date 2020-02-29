@@ -13,7 +13,8 @@
 > ### Mamadou Saliou BAH
 > - Projet Console (Algorithme et fonctionnement général)
 > - tous les algorithmes ont réalisés
->
+> - [x]
+> - [ ]
 
 ## Réalisations
 
