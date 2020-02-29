@@ -17,7 +17,7 @@
 
 ## Réalisations
 
-| Tâches WPF                                                            | Réalisation    |
+| Tâches WPF                                                            | Réalisations   |
 | :---                                                                  | :---           |
 | écran de visualisation et d'édition des données                       | - [x] réalisé  |
 | écran de paramétrage de la simulation                                 | - [x] réalisé  |
@@ -26,10 +26,10 @@
 | interface graphique devra être responsive                             | - [x] réalisé  |
 
 
-| Tâches de la console                                                  | Réalisation    |
-| :---                                                                  | :---           |
-| Code d'obtention de la première génération                            | - [x] réalisé  |
-| Code de CrossOver                                                     | - [x] réalisé  |
-| Code de Mutation                                                      | - [x] réalisé  |
-| Code de choix des Elites                                              | - [x] réalisé  |
-| Sélection de la prochaine génération en boucle selon le nombre voulu  | - [x] réalisé  |
+| Tâches de la console                                                  | Réalisations    |
+| :---                                                                  | :---            |
+| Code d'obtention de la première génération                            | -[X] réalisé    |
+| Code de CrossOver                                                     | - [x] réalisé   |
+| Code de Mutation                                                      |   -[x] réalisé  |
+| Code de choix des Elites                                              | - [ x ] réalisé |
+| Sélection de la prochaine génération en boucle selon le nombre voulu  | - [x] réalisé   |
