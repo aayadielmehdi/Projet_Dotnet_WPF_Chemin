@@ -32,3 +32,22 @@
 | Code de Mutation                                                      | **réalisé**    |
 | Code de choix des Elites                                              | **réalisé**    |
 | Sélection de la prochaine génération en boucle selon le nombre voulu  | **réalisé**    |
+
+## Interface Action
+
+- Récupérer de toute les villes et paramètres de la base
+- Afficher liste des villes et leur positionnement en map
+- Permettre la suppression d'une ville après message de confirmation
+- Chercher les villes par critère de recherche Nom
+- Paramètrer ton application
+- Lancer le programme du recherche de chemin plus court
+- Griser certain infos pour ne pas faire de modification
+- Afficher le chemin sur la map
+- Reset de l'application depuis le menu pour donner la main à l'utilisateur
+- Reset database pour supprimer toutes les villes et aussi paramètrage.
+
+## Information
+
+En cas d'erreur sur certain librairie (Ex: sqlite) après l'arret forcer de l'application, veuillez nettoyer la solution avant l'exécution une autre fois.
+
+Merci
